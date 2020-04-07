@@ -18,7 +18,9 @@
     "merge objects",
     "merge 2 objects",
     "merging recursively",
-    "inject json"
+    "inject json",
+    "configuration",
+    "config object"
   ],
   "author": "Leandro Cotti",
   "license": "ISC",
