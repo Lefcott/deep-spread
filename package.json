@@ -1,6 +1,6 @@
 {
   "name": "deep-spread",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Merges recursively 2 objects",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,9 @@
     "merging recursively",
     "inject json",
     "configuration",
-    "config object"
+    "config object",
+    "fusion",
+    "merge n objects"
   ],
   "author": "Leandro Cotti",
   "license": "ISC",
