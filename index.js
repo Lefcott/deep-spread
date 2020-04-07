@@ -24,8 +24,6 @@ const deepSpread = (Injector, Injected) => {
  * Merges recursively 2 objects prioritizing the injector values in case of overlapping
  * @typedef {Function} DeepSpread
  * @param {object} Injected - The object to be injected
- * @param {number} x - The X Coordinate
- * @param {number} y - The Y Coordinate
  */
 /**
  * Merges recursively 2 objects prioritizing the injector values in case of overlapping
