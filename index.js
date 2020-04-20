@@ -96,7 +96,6 @@ const replace = (values = {}, borders = '', borderRepeat = 1, trim = true) => ({
             const newValue = values[vKeys[a]];
             const search = `${b1}${rSpaces}${vKeys[a]}${rSpaces}${b2}`;
             obj[key] = obj[key].replace(new RegExp(search, 'g'), newValue);
-            console.log(search, obj[key]);
           }
         }
       }
