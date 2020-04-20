@@ -1,6 +1,6 @@
 {
   "name": "deep-spread",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Merges recursively 2 objects",
   "main": "index.js",
   "scripts": {

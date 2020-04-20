@@ -71,3 +71,36 @@ console.log(Merged);
 ```js
 ({ z: 4, A: 1, B: 2, C: 3, D: 4 })
 ```
+
+### Replacing recursively all the ocurrences of values in a JSON:
+```js
+const { replace } = require('deep-spread');
+
+const Object1 = {
+  a: 'Hello {{ Name }} {{ Surname }}!!',
+  b: 'Hi {{Name}} {{ Surname }}.',
+  c: {
+    d: {
+      e: 'Bye {{ Name}} {{ Surname }}',
+      f: 'Goodbye {{Name }} {{ Surname }}!'
+    }
+  }
+};
+const Values = { Name: 'MR.', Surname: 'Something' };
+
+replace(Values, '{}', 2, true).in(Object1);
+```
+
+### Result:
+```js
+({
+  a: 'Hello MR. Something!!',
+  b: 'Hi MR. Something.',
+  c: {
+    d: {
+      e: 'Bye MR. Something',
+      f: 'Goodbye MR. Something!'
+    }
+  }
+})
+```
