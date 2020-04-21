@@ -74,6 +74,14 @@ const getValue = (obj, search) => {
   return obj;
 };
 
+const arrayOfN = n => {
+  const result = [];
+  for (let k = 0; k < n; k += 1) result.push(k);
+  return result;
+};
+
+const getKeys = obj => Array.isArray(obj) ? arrayOfN(obj.length) : Object.keys(obj);
+
 /**
  * Deep replace of "values" in "Objects"
  * @param {object} values - Object where keys are searchs and values are values to replace
@@ -91,11 +99,11 @@ const replace = (values = {}, borders = '{}', borderRepeat = 2) => ({
     const b2 = escapeChar(borders[1] || '').repeat(borderRepeat);
     const result = [];
     for (let k = 0; k < Objects.length; k += 1) {
-      const obj = { ...Objects[k] };
-      const keys = Object.keys(obj);
+      const obj = Array.isArray(Objects[k]) ? [...Objects[k]] : { ...Objects[k] };
+      const keys = getKeys(obj);
       for (let m = 0; m < keys.length; m += 1) {
         const key = keys[m];
-        if (isObject(obj[key])) [obj[key]] = replace(values, borders, borderRepeat).in(obj[key]);
+        if (typeof obj[key] === 'object') [obj[key]] = replace(values, borders, borderRepeat).in(obj[key]);
         else if (typeof obj[key] === 'string') {
           obj[key] = obj[key].replace(new RegExp(`${b1}[^${b1}]*${b2}`, 'g'), match => {
             const nestedKey = match.replace(new RegExp(`${b1} *| *${b2}`, 'g'), '');
