@@ -66,14 +66,21 @@ const injectN = Injector => {
   return { result: Injector, to: to() };
 };
 
+const getValue = (obj, search) => {
+  search = search.split('.');
+  for (let k = 0; k < search.length; k += 1)
+    if ([null, undefined].includes(obj)) return undefined;
+    else obj = obj[search[k]]
+  return obj;
+};
+
 /**
  * Deep replace of "values" in "Objects"
  * @param {object} values - Object where keys are searchs and values are values to replace
  * @param {string} borders - String of length 2 indicating the start and end of search
  * @param {number} borderRepeat - Number of border repeats
- * @param {boolean} trim - Remove spaces next to the borders
  */
-const replace = (values = {}, borders = '', borderRepeat = 1, trim = true) => ({
+const replace = (values = {}, borders = '{}', borderRepeat = 2) => ({
   /**
    * Replaces values en each object
    * @param {object} Objects - Destination objects
@@ -82,21 +89,18 @@ const replace = (values = {}, borders = '', borderRepeat = 1, trim = true) => ({
   in: (...Objects) => {
     const b1 = escapeChar(borders[0] || '').repeat(borderRepeat);
     const b2 = escapeChar(borders[1] || '').repeat(borderRepeat);
-    const rSpaces = trim ? ' *' : '';
     const result = [];
     for (let k = 0; k < Objects.length; k += 1) {
       const obj = { ...Objects[k] };
       const keys = Object.keys(obj);
       for (let m = 0; m < keys.length; m += 1) {
         const key = keys[m];
-        if (isObject(obj[key])) [obj[key]] = replace(values, borders, borderRepeat, trim).in(obj[key]);
+        if (isObject(obj[key])) [obj[key]] = replace(values, borders, borderRepeat).in(obj[key]);
         else if (typeof obj[key] === 'string') {
-          const vKeys = Object.keys(values);
-          for (let a = 0; a < vKeys.length; a += 1) {
-            const newValue = values[vKeys[a]];
-            const search = `${b1}${rSpaces}${vKeys[a]}${rSpaces}${b2}`;
-            obj[key] = obj[key].replace(new RegExp(search, 'g'), newValue);
-          }
+          obj[key] = obj[key].replace(new RegExp(`${b1}[^${b1}]*${b2}`, 'g'), match => {
+            const nestedKey = match.replace(new RegExp(`${b1} *| *${b2}`, 'g'), '');
+            return getValue(values, nestedKey);
+          });
         }
       }
       result.push(obj);
